@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>GETTING STARTED WITH BRACKETS</title>
+        <meta name="description" content="An interactive getting started guide for Brackets.">
+        <link rel="stylesheet" href="main.css"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <script src="path/to/sharer.min.js"></script>
+       
+    </head>
+    
+    
+
+        
+        
+    <body style="background:darkorange">
+        
+   
+            
+        <div class="first">
+        
+            
+            <h3 class="question">Would you like to enable your camera?</h3>
+        <input type="button" value='Yes'  width="100px" height="50px"
+               id="press" onclick="start()" />
+           
+        
+    
+        
+        
+        </div>
+        
+        
+        <div id="container">
+            
+            
+            <div id="video-content">
+            
+                <video autoplay="true" width="500" height="300" id="videoElement">
+                
+                  </video>
+   
+                 
+                 <canvas id="canvas" width="500" height="300" background-color:'#010' ></canvas>
+            </div>
+            
+                                                   
+       
+   
+         
+                <input type ="button" value= "Snap" id="snap" onclick="takePicture()"/>
+                
+            
+                    
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+               <input type="button"  class="btn btn-danger" value="Send random" placeholder=""/>
+                    </div>
+             
+    
+                <div class="col-sm-6">
+                       <input type="button" class="btn btn-danger" value="Send to Kole"
+                              placeholder="" id="sendk"/>
+            </div>
+            </div>
+            
+            
+        
+            
+           
+        
+    
+   </div>
+"
+            </div>
+        
+        
+    
+        
+ 
+               
+         
+            
+     
+          
+    
+    
+    
+     <script type="text/javascript">
+         
+    
+         
+     
+        
+var but = document.getElementById('press');
+
+
+var canvas = document.querySelector('#canvas');
+var context = canvas.getContext('2d');
+var w,h,ratio;
+                     
+                       
+
+function start(){
+
+    var video = document.querySelector("#videoElement");
+    var photo  =document.getElementById("photo");
+         
+    
+if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (stream) {
+      video.srcObject = stream;
+    })
+    .catch(function (error) {
+      console.log("Something went wrong!");
+    });
+}
+    
+   
+   
+
+
+}
+         
+         
+     
+         
+     
+        
+function takePic(){
+    
+    const image = new Image();
+    image.src=' ';
+    image.onload = () => {
+        
+        const startX =(video.videoWidth /2) - (image.width/2);
+        const startY= (video.videoHeight/2) - (image.height/2);
+        
+        context.drawImage(image,startX,startY,image.width,image.height);
+        
+        canvas.toBlob() = (blob) => {
+            
+            const img = new Image();
+            img.src = window.URL.createObjectURL(blob);
+        };
+    };
+}
+    
+         
+            function clearphoto() {
+                
+       
+        var canvas = document.querySelector('#canvas');
+        var context = canvas.getContext('2d');
+                
+        context.fillStyle = "#AAA";
+        context.fillRect(0,0,canvas.width,canvas.height);
+                
+        var data = canvas.toDataURL('image/png');
+        photo.setAttribute('src',data);
+ 
+    
+    };
+         
+          function takePicture() {
+    var video = document.querySelector("#videoElement");
+    var context = canvas.getContext('2d');
+ 
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+      var data = canvas.toDataURL('image/png');
+    
+    
+  }
+       
+
+
+        var butkole = document.querySelector('#sendk');
+                 function print(){
+            
+               alert("IBravo,vie izpratihte uspeshno  na Koleto...");
+        }
+
+
+        butkole.addEventListenersetTimeout(function(){
+            
+            alert("Izchakva se Koleto da poluchi....");
+        },4000);
+                                 
+        
+                                 
+
+         
+       
+
+
+
+
+ 
+    </script>
+
+    </body>
+   
+   
+</html>
+        
+    
+<!--
+
+    [[[[[[[[[[[[[[[      ]]]]]]]]]]]]]]]
+    [::::::::::::::      ::::::::::::::]
+    [::::::::::::::      ::::::::::::::]
+    [::::::[[[[[[[:      :]]]]]]]::::::]
+    [:::::[                      ]:::::]
+    [:::::[                      ]:::::]
+    [:::::[                      ]:::::]
+    [:::::[                      ]:::::]
+    [:::::[     CODE THE WEB     ]:::::]
+    [:::::[  http://brackets.io  ]:::::]
+    [:::::[                      ]:::::]
+    [:::::[                      ]:::::]
+    [:::::[                      ]:::::]
+    [:::::[                      ]:::::]
+    [::::::[[[[[[[:      :]]]]]]]::::::]
+    [::::::::::::::      ::::::::::::::]
+    [::::::::::::::      ::::::::::::::]
+    [[[[[[[[[[[[[[[      ]]]]]]]]]]]]]]]
+
+-->
