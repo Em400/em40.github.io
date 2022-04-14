@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <style>
+     
+        </style>
+        <title>Monte Carlo</title>
+        <meta charset="utf-8">
+        
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        
+        <script src="lib/three.min.js"></script>
+        <script src="lib/lil-gui.umd.min.js"></script>
+        <script src="lib/vax.js"></script>
+
+    </head>
+    
+    <body>
+        <script>
+            //TODO 
+            //test the orbitcontrols thing - wehther we can get correct sides from rotated cube by by applying the camera matrix
+            //test whether we can get axis rotation by applying inverse transform to plane which is added to the cube
+            vaxInit();
+            var cubeGeometry = new THREE.BoxGeometry(15, 15, 15);
+            var material = new THREE.MeshLambertMaterial({color : 'grey'});
+            var cube = new THREE.Mesh(cubeGeometry, material);
+            cube.rotation.set(0.5, 0.7, 0.6);
+            
+            var click1 = null, click2 = null;
+
+            document.body.addEventListener('mousemove', onMouseMove);
+            document.body.addEventListener('mousedown', onMouseDown);
+            document.body.addEventListener('mouseup', onMouseUp);
+
+            function getClickedObject(e){
+                const raycaster = new THREE.Raycaster();
+                const pointer = new THREE.Vector2();
+                var x, y;
+                
+                if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove') {
+                    x = e.clientX;
+                    y = e.clientY;
+                } else {
+                    return null;
+                }
+
+                pointer.x = ( x / window.innerWidth ) * 2 - 1;
+                pointer.y = - (y / window.innerHeight ) * 2 + 1;
+
+                raycaster.setFromCamera( pointer, camera );
+
+                const intersects = raycaster.intersectObjects( scene.children );
+                if(intersects[0]){
+                    return intersects[0];
+                }
+                return null;
+            }
+
+            function onMouseMove(e){
+                if(click1){
+                    click2 = getClickedObject(e);
+                    console.log(click1);
+                    console.log(click2);                    
+                }
+            }
+
+            function onMouseUp(e){
+                click1 = null;
+                click2 = null;
+            }
+
+            function onMouseDown(e){
+                click1 = getClickedObject(e);
+            }
+            
+            scene.add(cube);
+
+        </script>
+    </body>
+</html>

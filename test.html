@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <style>
+     
+        </style>
+        <title>Monte Carlo</title>
+        <meta charset="utf-8">
+        
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        
+        <script src="lib/three.min.js"></script>
+        <script src="lib/lil-gui.umd.min.js"></script>
+        <script src="lib/vax.js"></script>
+
+    </head>
+    
+    <body>
+        <script>
+            //TODO 
+            //test the orbitcontrols thing - wehther we can get correct sides from rotated cube by by applying the camera matrix
+            //test whether we can get axis rotation by applying inverse transform to plane which is added to the cube
+            vaxInit();
+            var cubeGeometry = new THREE.BoxGeometry(15, 15, 15);
+            var material = new THREE.MeshLambertMaterial({color : 'grey'});
+            var cube = new THREE.Mesh(cubeGeometry, material);
+
+            function rnd(){
+                // return 0;
+                return THREE.MathUtils.randFloat(-2, 2) * Math.PI;
+            }
+            
+            basis = {
+                'x' : new THREE.Vector3(1, 0, 0),
+                'y' : new THREE.Vector3(0, 1, 0),
+                'z' : new THREE.Vector3(0, 0, 1),
+                '-x' : new THREE.Vector3(-1, 0, 0),
+                '-y' : new THREE.Vector3(0, -1, 0),
+                '-z' : new THREE.Vector3(0, 0, -1)
+            }
+
+            var errors = 0;
+
+            for(let i = 0; i < 1000; i++){
+             break;
+                var r1 = rnd();
+                var r2 = rnd();
+                var r3 = rnd();
+                // console.log(r1);
+                cube.rotation.set(r1, r2, r3);
+
+                var x_cube = new THREE.Vector3(0, 0, 0);
+                var y_cube = new THREE.Vector3(0, 0, 0);
+                var z_cube = new THREE.Vector3(0, 0, 0);
+                cube.updateMatrix();
+
+                var m = cube.matrix; 
+                m.extractBasis(x_cube, y_cube, z_cube);
+                
+                var arr = [x_cube, y_cube, z_cube];
+
+                console.log(x_cube.dot(y_cube));
+
+                var res = {'x' : 0, 'y' : 0, 'z' : 0, '-y' : 0, '-z' : 0, '-x' :0}
+
+                for(const b of arr){
+                    var smallestAngle = Math.PI/2;
+                    var closestAxis;                    
+                    for(const s in basis){
+                        var angle = Math.abs(b.angleTo(basis[s]));
+                        console.log("angle" + angle + s);
+                        if(angle < smallestAngle){
+                            smallestAngle = angle;
+                            closestAxis = s;
+                        }
+                    }
+                    console.log(closestAxis);
+                    res[closestAxis]++;        
+                }
+
+                console.log(res);
+                
+                console.log(res['x']);
+                console.log(res['y']);
+                console.log(res['z']);
+
+                var duplicates = Object.keys(res).some(function(k) {
+                    return res[k] > 1;
+                });
+                if(duplicates){
+                    errors++;
+                }
+            } 
+
+            console.log(errors);
+
+        </script>
+    </body>
+</html>
